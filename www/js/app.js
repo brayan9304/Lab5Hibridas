@@ -5,16 +5,16 @@
 // the 2nd parameter is an array of 'requires'
 var climaCtrl = angular.module('starter', ['ionic']);
 
-document.addEventListener("deviceready", onDeviceReady, false);
-
-
-function onDeviceReady() {
-  navigator.geolocation.getCurrentPosition(exito, error);
-}
-
 
 climaCtrl.run(function ($ionicPlatform) {
   $ionicPlatform.ready(function () {
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+
+    function onDeviceReady() {
+      navigator.geolocation.getCurrentPosition(exito, error);
+    }
+
     if (window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
