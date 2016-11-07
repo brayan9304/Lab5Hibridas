@@ -28,28 +28,11 @@
 
   <!-- cordova script (this will be a 404 during development) -->
   <script src="cordova.js"></script>
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
   <!-- your app's js -->
   <script src="js/app.js"></script>
-  <script>
-    $( function() {
-      var availableTags = [
-        "Bogota",
-        "Bucaramanga",
-        "Medellin",
-        "Cali",
-        "Barranquilla",
-        "Cartagena",
-        "Cucuta"
-      ];
-      $( "#tags" ).autocomplete({
-        source: availableTags
-      });
-    } );
-  </script>
+
 </head>
 <body ng-app="starter" ng-controller="WeatherCtrl">
 <ion-pane>
@@ -62,13 +45,29 @@
       <div class="item item-input-inset">
         <label class="item item-input-wrapper">
           <i class="icon ion-search placeholder-icon"></i>
-          <input id="tags" ng-model="buscarCiudad" type="text" placeholder="Ciudad">
+          <input list="mylist" ng-model="buscar.ciudad" type="text" placeholder="Ciudad">
         </label>
-        <button ng-click='changeCity()' class="button button-dark button-small">
+        <datalist id="mylist">
+          <option value="Bogota"></option>
+          <option value="Medellin"></option>
+          <option value="Cali"></option>
+          <option value="Cucuta"></option>
+          <option value="Bucaramanga"></option>
+          <option value="Barranquilla"></option>
+          <option value="Cartagena"></option>
+        </datalist>
+        <button ng-click='changeCity(buscar)' class="button button-dark button-small">
           Buscar
         </button>
       </div>
     </div>
+
+
+
+
+
+
+
     <!--Response of the api open weather  -->
     <div>
       <ul class="list">

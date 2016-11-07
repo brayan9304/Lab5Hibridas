@@ -3,9 +3,9 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var app = angular.module('starter', ['ionic'])
+angular.module('starter', ['ionic'])
 
-  app.controller('WeatherCtrl', function ($scope, $http) {
+.controller('WeatherCtrl', function ($scope, $http) {
 
     var Q = "q=";
     var appid = "&appid=";
@@ -14,8 +14,8 @@ var app = angular.module('starter', ['ionic'])
     var url = 'http://api.openweathermap.org/data/2.5/weather?';
     var request = url + Q + city  + appid + key;
 
-    $scope.changeCity = function(){
-      city  = $scope.buscarCiudad;
+    $scope.changeCity = function(buscar){
+      city  = buscar.ciudad;
       request = url + Q + city  + appid + key;
       $http.get(request).then(function (response) {
         $scope.weath = response.data;
@@ -26,7 +26,8 @@ var app = angular.module('starter', ['ionic'])
     });
   })
 
-  app.run(function ($ionicPlatform) {
+
+  .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
       if (window.cordova && window.cordova.plugins.Keyboard) {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -42,4 +43,5 @@ var app = angular.module('starter', ['ionic'])
         StatusBar.styleDefault();
       }
     });
+
   })
