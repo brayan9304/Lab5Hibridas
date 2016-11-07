@@ -64,9 +64,9 @@
 
         <label class="item item-input-wrapper">
           <i class="icon ion-search placeholder-icon"></i>
-          <input id="tags" ng-model="buscar" name="weatherCity" type="text" placeholder="Ciudad">
+          <input id="tags" ng-model="buscar.ciudad" name="weatherCity" type="text" placeholder="Ciudad">
         </label>
-        <button on-release="changeCity()" class="button button-dark button-small">
+        <button ng-click="changeCity(buscar)" class="button button-dark button-small">
           Buscar
         </button>
 

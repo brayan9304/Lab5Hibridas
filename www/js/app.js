@@ -8,12 +8,6 @@ var climaCtrl = angular.module('starter', ['ionic']);
 
 climaCtrl.run(function ($ionicPlatform) {
   $ionicPlatform.ready(function () {
-    document.addEventListener("deviceready", onDeviceReady, false);
-
-
-    function onDeviceReady() {
-      navigator.geolocation.getCurrentPosition(exito, error);
-    }
 
     if (window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -31,9 +25,15 @@ climaCtrl.run(function ($ionicPlatform) {
   });
 });
 
-climaCtrl.controller('currentLocationWeather', function ($scope, $http) {
+climaCtrl.controller('currentLocationWeather', ['$scope','$http',function ($scope, $http) {
   var options = {timeout: 10000};
-  navigator.geolocation.watchPosition(exito, error, options);
+  $scope.city = null;
+  if($scope.city == null){
+    navigator.geolocation.watchPosition(exito, error, options);
+  }else{
+    window.alert("hola");
+  }
+
 
   function exito(position) {
     var latitud = "lat=" + position.coords.latitude;
@@ -53,13 +53,10 @@ climaCtrl.controller('currentLocationWeather', function ($scope, $http) {
       'message: ' + error.message + '\n');
   }
 
-  $scope.changeCity = function () {
-    $scope.buscar = '';
-    $scope.city = $scope.buscar;
-    window.alert($scope.city);
+  $scope.changeCity = function (buscar) {
+    $scope.city = buscar.ciudad;
     var Q = "q=";
     var appid = "&appid=";
-    $scope.city = "bogota";
     var key = "2aba3adc8f9a3eed10e9d43a47edd216";
     var url = 'http://api.openweathermap.org/data/2.5/weather?';
     var request = url + Q + $scope.city + appid + key;
@@ -69,4 +66,4 @@ climaCtrl.controller('currentLocationWeather', function ($scope, $http) {
     )
   }
 
-});
+}]);
