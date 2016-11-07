@@ -32,36 +32,44 @@
   <!-- your app's js -->
   <script src="js/app.js"></script>
 </head>
-<body ng-app="starter">
+<body ng-app="starter" ng-controller="currentLocationWeather">
 <ion-pane>
   <ion-header-bar class="bar-dark">
+    <button class="button button-small button-dark icon-left ion-chevron-left">Back</button>
     <h1 class="title">Weather</h1>
   </ion-header-bar>
   <ion-content>
-  <!--Input search city -->
-    <div class="list item item-input-inset">
-      <label class="item item-input-wrapper">
-        <i class="icon ion-search placeholder-icon"></i>
-        <input ng-model="buscar" type="text" placeholder="Ciudad">
-      </label>
-      <button ng-click="changeCity()" class="button button-dark button-small">
-        Buscar
-      </button>
-      <!--Response of the api open weather  -->
-    </div>
-    <div ng-controller="WeatherCtrl">
+    <!--Input search city -->
+    <form name="weatherForm">
+      <div class="list item item-input-inset">
+
+        <label class="item item-input-wrapper">
+          <i class="icon ion-search placeholder-icon"></i>
+          <input ng-model="buscar" name="weatherCity" type="text" placeholder="Ciudad">
+        </label>
+        <button on-release="changeCity()" class="button button-dark button-small">
+          Buscar
+        </button>
+
+        <!--Response of the api open weather  -->
+      </div>
+    </form>
+    <div>
+      <div class="item item-divider">
+        <h2 class="text-center"><b>Información del Clima</b></h2>
+      </div>
       <ul class="list">
         <li class="item">
-          <h2>Ciudad actual: {{weath.name}}</h2>
+          <h2>Ciudad actual: {{weather.name}}</h2>
         </li>
         <li class="item">
-          <h2>Temperatura: {{weath.main.temp}}</h2>
+          <h2>Temperatura: {{weather.main.temp-273.15| number:2}} °C</h2>
         </li>
         <li class="item">
-          <h2>Humedad: {{weath.main.humidity}}</h2>
+          <h2>Humedad: {{weather.main.humidity}} %</h2>
         </li>
         <li class="item">
-          <h2>Description: {{weath.weather}}</h2>
+          <h2>Description: {{weather.weather[0].description}}</h2>
         </li>
       </ul>
     </div>
