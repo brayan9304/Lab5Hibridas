@@ -26,10 +26,9 @@ climaCtrl.run(function ($ionicPlatform) {
 });
 
 climaCtrl.controller('currentLocationWeather', ['$scope','$http',function ($scope, $http) {
-  var options = {timeout: 10000};
   $scope.city = null;
   if($scope.city == null){
-    navigator.geolocation.watchPosition(exito, error, options);
+    navigator.geolocation.getCurrentPosition(exito, error);
   }else{
     window.alert("hola");
   }
@@ -55,6 +54,7 @@ climaCtrl.controller('currentLocationWeather', ['$scope','$http',function ($scop
 
   $scope.changeCity = function (buscar) {
     $scope.city = buscar.ciudad;
+    buscar.ciudad ='';
     var Q = "q=";
     var appid = "&appid=";
     var key = "2aba3adc8f9a3eed10e9d43a47edd216";
