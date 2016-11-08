@@ -79,16 +79,20 @@
         <h2 class="text-center"><b>Información del Clima</b></h2>
       </div>
       <ul class="list">
-        <li class="item">
+        <li class="item item-icon-left">
+          <i class="icon ion-android-globe"></i>
           <h2>Ciudad actual: {{weather.name}}</h2>
         </li>
-        <li class="item">
+        <li class="item item-icon-left">
+          <i class="icon ion-thermometer"></i>
           <h2>Temperatura: {{weather.main.temp-273.15| number:2}} °C</h2>
         </li>
-        <li class="item">
+        <li class="item item-icon-left">
+          <i class="icon ion-waterdrop"></i>
           <h2>Humedad: {{weather.main.humidity}} %</h2>
         </li>
-        <li class="item">
+        <li class="item item-icon-left">
+          <i class="icon ion-ios-partlysunny"></i>
           <h2>Description: {{weather.weather[0].description}}</h2>
         </li>
       </ul>
