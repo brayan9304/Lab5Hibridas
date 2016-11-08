@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-var climaCtrl = angular.module('starter', ['ionic']);
+var climaCtrl = angular.module('starter', ['ionic', 'ngCordova']);
 
 
 climaCtrl.run(function ($ionicPlatform) {
@@ -25,7 +25,7 @@ climaCtrl.run(function ($ionicPlatform) {
   });
 });
 
-climaCtrl.controller('currentLocationWeather', ['$scope', '$http', function ($scope, $http,  $cordovaToast) {
+climaCtrl.controller('currentLocationWeather', ['$scope', '$http', function ($scope, $http, $cordovaToast) {
   $scope.city = null;
   if ($scope.city == null) {
     navigator.geolocation.getCurrentPosition(exito, error);
@@ -62,7 +62,7 @@ climaCtrl.controller('currentLocationWeather', ['$scope', '$http', function ($sc
       }
     }
 
-    if (sw!=false) {
+    if (sw != false) {
       var Q = "q=";
       var appid = "&appid=";
       var key = "2aba3adc8f9a3eed10e9d43a47edd216";
@@ -71,8 +71,8 @@ climaCtrl.controller('currentLocationWeather', ['$scope', '$http', function ($sc
       $http.get(request).then(function (response) {
         $scope.weather = response.data;
       })
-    }else{
-      window.alert(buscar.ciudad+" no es una ciudad principal de Colombia");
+    } else {
+      $cordovaToast.showShortBottom(buscar.ciudad + 'no es una ciudad principal de Colombia');
     }
     buscar.ciudad = '';
   }
