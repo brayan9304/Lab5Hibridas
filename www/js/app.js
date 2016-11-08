@@ -12,7 +12,6 @@ climaCtrl.run(function ($ionicPlatform) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-
       // Don't remove this line unless you know what you are doing. It stops the viewport
       // from snapping when text inputs are focused. Ionic handles this internally for
       // a much nicer keyboard experience.
@@ -22,17 +21,17 @@ climaCtrl.run(function ($ionicPlatform) {
       StatusBar.styleDefault();
     }
   });
-  $ionicPlatform.on('resume',function () {
+  $ionicPlatform.on('resume', function () {
     navigator.geolocation.getCurrentPosition(exito, error);
   });
 });
 
-climaCtrl.controller('currentLocationWeather', ['$scope', '$http', function ($scope, $http, $cordovaToast) {
+climaCtrl.controller('currentLocationWeather', ['$scope', '$http', '$ionicPopup', '$cordovaToast', function ($scope, $http, $ionicPopup, $cordovaToast) {
   $scope.city = null;
   if ($scope.city == null) {
     navigator.geolocation.getCurrentPosition(exito, error);
   } else {
-    window.alert("hola");
+
   }
 
 
@@ -62,27 +61,41 @@ climaCtrl.controller('currentLocationWeather', ['$scope', '$http', function ($sc
   }
 
   $scope.changeCity = function (buscar) {
-    var sw = false;
-    var ciudades = ["Bogota", "Medellin", "Cali", "Cucuta", "Bucaramanga", "Barranquilla", "Cartagena"];
-    for (i = 0; i < ciudades.length; i++) {
-      if (buscar.ciudad == ciudades[i]) {
-        $scope.city = buscar.ciudad;
-        sw = true;
+    if (buscar.ciudad != null && buscar.ciudad != '') {
+      var sw = false;
+      var ciudades = ["bogota", "medellin", "cali", "cucuta", "bucaramanga", "barranquilla", "cartagena",
+        "pasto", "ibague", "villavicencio", "bello", "pereira", "neiva", "soacha", "valledupar", "santa marta"];
+      for (i = 0; i < ciudades.length; i++) {
+        var ciudadlowercase = buscar.ciudad.toLowerCase();
+        if (ciudadlowercase == ciudades[i]) {
+          $scope.city = buscar.ciudad;
+          sw = true;
+        }
       }
-    }
+      if (sw) {
+        var Q = "q=";
+        var appid = "&appid=";
+        var key = "2aba3adc8f9a3eed10e9d43a47edd216";
+        var url = 'http://api.openweathermap.org/data/2.5/weather?';
+        var request = url + Q + $scope.city + appid + key;
+        $http.get(request).then(function (response) {
+          $scope.weather = response.data;
+        }, function httpError(response) {
+          if (response.data == null) {
+            $ionicPopup.alert({
+              title: 'Error', template: 'No hay conexión!'
+            });
+          }
+        })
+      } else {
+        $cordovaToast.showShortBottom(buscar.ciudad + 'No es una ciudad principal de Colombia');
+        buscar.ciudad = '';
+      }
+      ;
+      buscar.ciudad = '';
 
-    if (sw != false) {
-      var Q = "q=";
-      var appid = "&appid=";
-      var key = "2aba3adc8f9a3eed10e9d43a47edd216";
-      var url = 'http://api.openweathermap.org/data/2.5/weather?';
-      var request = url + Q + $scope.city + appid + key;
-      $http.get(request).then(function (response) {
-        $scope.weather = response.data;
-      })
-    } else {
-      $cordovaToast.showShortBottom(buscar.ciudad + 'no es una ciudad principal de Colombia');
+    }else{
+      $cordovaToast.showShortBottom("Campo en blanco");
     }
-    buscar.ciudad = '';
   }
 }]);

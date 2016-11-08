@@ -29,6 +29,7 @@
   <!-- cordova script (this will be a 404 during development) -->
   <script src="js/ng-cordova.min.js"></script>
   <script src="cordova.js"></script>
+  <script src="js/ng-cordova.min.js"></script>
 
 
   <!-- your app's js -->
@@ -46,7 +47,7 @@
       <div class="list item item-input-inset">
         <label class="item item-input-wrapper">
           <i class="icon ion-search placeholder-icon"></i>
-          <input style="font-size: larger" list="mylist" ng-model="buscar.ciudad" type="text" placeholder="Ciudad">
+          <input maxlength="20" style="font-size: larger" list="mylist" ng-model="buscar.ciudad" type="text" placeholder="Ciudad">
         </label>
         <datalist id="mylist">
           <option value="Bogota"></option>
