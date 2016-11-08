@@ -8,7 +8,6 @@ var climaCtrl = angular.module('starter', ['ionic']);
 
 climaCtrl.run(function ($ionicPlatform) {
   $ionicPlatform.ready(function () {
-
     if (window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -23,14 +22,17 @@ climaCtrl.run(function ($ionicPlatform) {
       StatusBar.styleDefault();
     }
   });
+  $ionicPlatform.on('resume',function () {
+    navigator.geolocation.getCurrentPosition(exito, error);
+  });
 });
 
-climaCtrl.controller('currentLocationWeather', ['$scope','$http',function ($scope, $http) {
+climaCtrl.controller('currentLocationWeather', ['$scope', '$http', '$ionicPopup', function ($scope, $http, $ionicPopup) {
   $scope.city = null;
-  if($scope.city == null){
+  if ($scope.city == null) {
     navigator.geolocation.getCurrentPosition(exito, error);
-  }else{
-    window.alert("hola");
+  } else {
+
   }
 
 
@@ -42,28 +44,40 @@ climaCtrl.controller('currentLocationWeather', ['$scope','$http',function ($scop
     var url = 'http://api.openweathermap.org/data/2.5/weather?';
     var request = url + latitud + longitud + appid + key;
 
-    $http.get(request).then(function (response) {
+    $http.get(request).then(function httpSuccess(response) {
       $scope.weather = response.data;
+    }, function httpError(response) {
+      if (response.data == null) {
+        $ionicPopup.alert({
+          title: 'Error', template: 'No hay conexión!'
+        });
+      }
     });
   }
 
   function error(error) {
-    window.alert('code: ' + error.code + '\n' +
-      'message: ' + error.message + '\n');
+    $ionicPopup.alert({
+      title: 'Error', template: error.message
+    });
   }
 
   $scope.changeCity = function (buscar) {
     $scope.city = buscar.ciudad;
-    buscar.ciudad ='';
+    buscar.ciudad = '';
     var Q = "q=";
     var appid = "&appid=";
     var key = "2aba3adc8f9a3eed10e9d43a47edd216";
     var url = 'http://api.openweathermap.org/data/2.5/weather?';
     var request = url + Q + $scope.city + appid + key;
     $http.get(request).then(function (response) {
-        $scope.weather = response.data;
+      $scope.weather = response.data;
+    }, function httpError(response) {
+      if (response.data == null) {
+        $ionicPopup.alert({
+          title: 'Error', template: 'No hay conexión!'
+        });
       }
-    )
+    });
   }
 
 }]);
