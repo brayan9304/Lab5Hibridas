@@ -8,7 +8,6 @@ var climaCtrl = angular.module('starter', ['ionic', 'ngCordova']);
 
 climaCtrl.run(function ($ionicPlatform) {
   $ionicPlatform.ready(function () {
-
     if (window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -22,6 +21,9 @@ climaCtrl.run(function ($ionicPlatform) {
     if (window.StatusBar) {
       StatusBar.styleDefault();
     }
+  });
+  $ionicPlatform.on('resume',function () {
+    navigator.geolocation.getCurrentPosition(exito, error);
   });
 });
 
@@ -42,14 +44,21 @@ climaCtrl.controller('currentLocationWeather', ['$scope', '$http', function ($sc
     var url = 'http://api.openweathermap.org/data/2.5/weather?';
     var request = url + latitud + longitud + appid + key;
 
-    $http.get(request).then(function (response) {
+    $http.get(request).then(function httpSuccess(response) {
       $scope.weather = response.data;
+    }, function httpError(response) {
+      if (response.data == null) {
+        $ionicPopup.alert({
+          title: 'Error', template: 'No hay conexión!'
+        });
+      }
     });
   }
 
   function error(error) {
-    window.alert('code: ' + error.code + '\n' +
-      'message: ' + error.message + '\n');
+    $ionicPopup.alert({
+      title: 'Error', template: error.message
+    });
   }
 
   $scope.changeCity = function (buscar) {
