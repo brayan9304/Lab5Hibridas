@@ -25,11 +25,11 @@ climaCtrl.run(function ($ionicPlatform) {
   });
 });
 
-climaCtrl.controller('currentLocationWeather', ['$scope','$http',function ($scope, $http) {
+climaCtrl.controller('currentLocationWeather', ['$scope', '$http', function ($scope, $http,  $cordovaToast) {
   $scope.city = null;
-  if($scope.city == null){
+  if ($scope.city == null) {
     navigator.geolocation.getCurrentPosition(exito, error);
-  }else{
+  } else {
     window.alert("hola");
   }
 
@@ -53,17 +53,27 @@ climaCtrl.controller('currentLocationWeather', ['$scope','$http',function ($scop
   }
 
   $scope.changeCity = function (buscar) {
-    $scope.city = buscar.ciudad;
-    buscar.ciudad ='';
-    var Q = "q=";
-    var appid = "&appid=";
-    var key = "2aba3adc8f9a3eed10e9d43a47edd216";
-    var url = 'http://api.openweathermap.org/data/2.5/weather?';
-    var request = url + Q + $scope.city + appid + key;
-    $http.get(request).then(function (response) {
-        $scope.weather = response.data;
+    var sw = false;
+    var ciudades = ["Bogota", "Medellin", "Cali", "Cucuta", "Bucaramanga", "Barranquilla", "Cartagena"];
+    for (i = 0; i < ciudades.length; i++) {
+      if (buscar.ciudad == ciudades[i]) {
+        $scope.city = buscar.ciudad;
+        sw = true;
       }
-    )
-  }
+    }
 
+    if (sw!=false) {
+      var Q = "q=";
+      var appid = "&appid=";
+      var key = "2aba3adc8f9a3eed10e9d43a47edd216";
+      var url = 'http://api.openweathermap.org/data/2.5/weather?';
+      var request = url + Q + $scope.city + appid + key;
+      $http.get(request).then(function (response) {
+        $scope.weather = response.data;
+      })
+    }else{
+      window.alert(buscar.ciudad+" no es una ciudad principal de Colombia");
+    }
+    buscar.ciudad = '';
+  }
 }]);
